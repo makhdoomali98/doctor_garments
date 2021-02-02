@@ -35,8 +35,45 @@ class InventoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $response = ['error' => true, 'status' => 'error', 'message' => 'Server Error'];
+//        request()->validate([
+//            'neck_shape' => 'required',
+//            'product_type' => 'required',
+//            'fabric' => 'required',
+//            'design' => 'required',
+//            'gender' => 'required',
+//            'size' => 'required',
+//            'selling' => 'required',
+//            'in_stock' => 'required',
+//            'quantity' => 'required',
+//        ]);
+        $inventory = new Inventory();
+//        $inventory->id=$request->id;
+        $inventory->neck_shape = $request->neck_shape;
+        $inventory->product_type = $request->product_type;
+        $inventory->fabric = $request->fabric;
+        $inventory->design = $request->design;
+        $inventory->gender=$request->gender;
+        $inventory->size=$request->size;
+        $inventory->selling=$request->selling;
+        $inventory->in_stock=$request->in_stock;
+        $inventory->quantity=$request->quantity;
+
+
+        if ($inventory->save()) {
+            $response = [
+                'error' => false,
+                'status' => 'success',
+                'message' => 'Your data created Successfully',
+                'data' => $inventory,
+            ];
+        }
+
+        return ($response);
+
     }
+        //
+
 
     /**
      * Display the specified resource.
@@ -46,7 +83,14 @@ class InventoryController extends Controller
      */
     public function show(Inventory $inventory)
     {
-        //
+
+        $inventory = Inventory::get();
+        return $response = [
+
+            'error' => false,
+            'status' => 'success',
+            'data' => $inventory,
+        ];
     }
 
     /**
@@ -69,7 +113,34 @@ class InventoryController extends Controller
      */
     public function update(Request $request, Inventory $inventory)
     {
-        //
+
+
+        $response = ['error' => true, 'status' => 'error', 'message' => 'Server Error'];
+//        request()->validate([
+//            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+//        ]);
+
+        $inventory = Inventory::find($request->inventory_id);
+        $inventory->neck_shape = $request->neck_shape;
+        $inventory->product_type = $request->product_type;
+        $inventory->fabric = $request->fabric;
+        $inventory->design = $request->design;
+        $inventory->gender = $request->gender;
+        $inventory->size = $request->size;
+        $inventory->selling = $request->selling;
+        $inventory->in_stock = $request->in_stock;
+        $inventory->quantity = $request->quantity;
+
+        if ($inventory->save()) {
+            $response = [
+                'error' => false,
+                'status' => 'success',
+                'message' => 'Your data updated Successfully',
+                'data' => $inventory,
+            ];
+        }
+
+        return ($response);
     }
 
     /**
@@ -78,8 +149,21 @@ class InventoryController extends Controller
      * @param  \App\Inventory  $inventory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Inventory $inventory)
+    public function destroy(Request $request, Inventory $inventory)
     {
-        //
+        $id = $request->id;
+
+        $inventory = Inventory::destroy($id);
+        return $inventory = [
+            'error' => false,
+            'status' => 'success',
+            'message' => '',
+            'data' => $inventory,
+        ];
+    }
+    public function getEdit( Request $request){
+
+        $id = $request->id;
+        return $inventory = Inventory::where('id' , '=', $id)->get();
     }
 }

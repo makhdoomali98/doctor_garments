@@ -24,7 +24,6 @@ class CreateInventoriesTable extends Migration
             $table->enum('selling',['yes', 'no']);
             $table->enum('in_stock',['yes', 'no']);
             $table->bigInteger('quantity');
-            $table->integer('returned');
             $table->timestamps();
         });
     }
